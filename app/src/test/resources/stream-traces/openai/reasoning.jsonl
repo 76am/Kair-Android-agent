@@ -1,0 +1,14 @@
+{"type":"reasoningStart","id":"reasoning-0","reasoningType":"REASONING_TEXT"}
+{"type":"reasoningDelta","text":"Thinking one. "}
+{"type":"reasoningEnd","id":"reasoning-0"}
+{"type":"textStart","id":"text-0"}
+{"type":"textDelta","text":"Answer one. "}
+{"type":"textEnd","id":"text-0"}
+{"type":"reasoningStart","id":"reasoning-1","reasoningType":"REASONING_TEXT"}
+{"type":"reasoningDelta","text":"Thinking two."}
+{"type":"reasoningEnd","id":"reasoning-1"}
+{"type":"textStart","id":"text-1"}
+{"type":"textDelta","text":"Answer two."}
+{"type":"textEnd","id":"text-1"}
+{"type":"usageEvent","usage":{"input":30,"output":12,"cacheRead":0,"cacheWrite":0}}
+{"type":"completed","stopReason":"stop"}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  自适应图标：背景纯白（@color/ic_launcher_background），前景是紫发侧颜 +
+  粉紫渐变全出血圆角方底（2026-11-22 换图）。
+
+  源图是全出血圆角方底（圆角半径约 15.4%），按圆角蒙版向内收 0.36% 抠掉抗锯齿
+  残留的白晕。前景按 108dp 画布整图缩放 **0.75** 居中：72dp 可见圆完全落在图标
+  内部，圆形 / 圆角遮罩下不再露出背景白圈（0.605 会在圆边留约 3.5% 的白边）。
+  角色主体居中，裁掉的只是外围渐变底色，观感是满幅渐变。
+  不要改回单层位图：那样系统会自己加白边，观感完全不同。
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>

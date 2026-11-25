@@ -1,0 +1,7 @@
+{"type":"textStart","id":"text-0"}
+{"type":"textDelta","text":"Let me check. "}
+{"type":"textEnd","id":"text-0"}
+{"type":"toolCallStarted","index":0,"id":"call_1","name":"echo"}
+{"type":"toolCallArgsDelta","index":0,"delta":"{\"text\":\"hi\"}"}
+{"type":"toolCallsCompleted","calls":[{"id":"call_1","name":"echo","arguments":"{\"text\":\"hi\"}"}]}
+{"type":"completed","stopReason":"toolUse"}

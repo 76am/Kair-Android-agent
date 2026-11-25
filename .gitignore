@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+build/
+.kotlin/
+
+# Android SDK path is machine-specific
+local.properties
+
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# IDE
+.idea/
+*.iml
+.cxx/
+captures/
+
+# OS
+.DS_Store
+
+# proot 原生构建中间产物（scripts/build-proot.sh）
+.proot-build/
+
+# 本机 agent 记忆（.workbuddy/memory 等），不进仓库
+.workbuddy/
+
+# 真机排查截图（临时产物，别入库）
+.*.png

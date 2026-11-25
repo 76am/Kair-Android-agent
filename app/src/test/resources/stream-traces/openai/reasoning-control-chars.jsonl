@@ -1,0 +1,8 @@
+{"type":"reasoningStart","id":"reasoning-0","reasoningType":"REASONING_TEXT"}
+{"type":"reasoningDelta","text":"Hel\u0000lo\u0001 wor\u007Fld"}
+{"type":"reasoningEnd","id":"reasoning-0"}
+{"type":"textStart","id":"text-0"}
+{"type":"textDelta","text":"OK"}
+{"type":"textEnd","id":"text-0"}
+{"type":"usageEvent","usage":{"input":10,"output":3,"cacheRead":0,"cacheWrite":0}}
+{"type":"completed","stopReason":"stop"}

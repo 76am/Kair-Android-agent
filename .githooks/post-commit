@@ -1,0 +1,40 @@
+#!/bin/sh
+# 提交者身份守卫。
+#
+# 宿主给每个 shell 注入 GIT_COMMITTER_NAME / GIT_COMMITTER_EMAIL（trae-solo-agent），
+# 它们的优先级高于 git config —— 光设 user.name 不管用，新会话 / 容器重建后又会写回
+# trae-solo-agent。这里在提交完成后用**该提交的作者**再 amend 一次提交者。
+#
+# 只修 agent 身份，不动真人：提交者不是 solo-agent@trae.ai 就原样放行。协作者即使也
+# 装了钩子、也在同一个宿主里跑，提交者只会被改成**他们自己的作者身份**，不会被改成 76am。
+#
+# 防递归：amend 触发的第二次 post-commit 由 KAIR_COMMITTER_FIXED 直接放行。
+# rebase / merge 期间不动：那些流程会自己重写提交，嵌套 amend 会打断它。
+# --allow-empty：空提交（--allow-empty）amend 时也要能过。
+
+[ -n "$KAIR_COMMITTER_FIXED" ] && exit 0
+
+git_dir=$(git rev-parse --git-dir 2>/dev/null) || exit 0
+[ -d "$git_dir/rebase-merge" ] && exit 0
+[ -d "$git_dir/rebase-apply" ] && exit 0
+[ -f "$git_dir/MERGE_HEAD" ] && exit 0
+
+current=$(git log -1 --format='%cn <%ce>' 2>/dev/null)
+case "$current" in
+  *"<solo-agent@trae.ai>"*) ;; # 宿主注入的 agent 提交者：继续修
+  *) exit 0 ;;                 # 真人提交者：原样保留
+esac
+
+author_name=$(git log -1 --format='%an' 2>/dev/null)
+author_email=$(git log -1 --format='%ae' 2>/dev/null)
+if [ -z "$author_name" ] || [ -z "$author_email" ]; then
+  exit 0
+fi
+[ "$current" = "$author_name <$author_email>" ] && exit 0
+
+KAIR_COMMITTER_FIXED=1 \
+GIT_COMMITTER_NAME="$author_name" \
+GIT_COMMITTER_EMAIL="$author_email" \
+  git commit --amend --no-edit --no-verify --allow-empty >/dev/null 2>&1 || true
+
+exit 0

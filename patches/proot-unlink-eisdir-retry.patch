@@ -1,0 +1,41 @@
+# U72 · proot unlinkat EISDIR 重试修复（负责人 2026-11-12 拍板，任务书见 docs/tasks/2026-11-09-proot-remove目录失效根治.md）
+#
+# 为什么必须打这个补丁：
+#   容器内 libc remove() 删目录恒 ENOENT。musl 的 remove() 是手写汇编：先
+#   unlinkat(path, 0)，拿到 EISDIR 后复用同一路径寄存器再发
+#   unlinkat(path, AT_REMOVEDIR)。proot 在 enter 阶段把 SYSARG_2 改写为宿主
+#   路径，而参数寄存器的复原只发生在 syscall-exit 阶段；seccomp 加速下
+#   unlinkat 没有任何 FILTER_SYSEXIT 请求者，exit 停止被跳过 → 寄存器不复原
+#   → 第二次调用把宿主路径当 guest 路径二次 re-root → ENOENT。
+#   这同时解释了既有归属事实：开 --link2symlink 时 l2s 为 PR_unlinkat 注册了
+#   FILTER_SYSEXIT，exit 停止必然发生，故 remove() 正常。
+#
+# 修复：给核心 proot_sysnums 的 PR_unlinkat 直接标 FILTER_SYSEXIT，
+#   与 l2s 开启时的行为对齐，不依赖扩展、不改翻译逻辑、不加开关。
+#   代价：每个 unlinkat 多一次 exit 停止（l2s 开启时本就是这个成本）。
+#
+# 验证（2026-11-12，宿主 x86_64 Linux + seccomp 加速，复刻 musl 寄存器复用的 C 探针）：
+#   回退态：remove(空目录) rc=-2 ENOENT、目录仍在；remove(文件) rc=0。
+#   打补丁：remove(空目录) rc=0；remove(非空目录) rc=-39 ENOTEMPTY；
+#           remove(不存在) rc=-2 ENOENT；remove(文件) rc=0。反向验证已做。
+#   真机 C 层（P1–P5，含 --root-id 开/关对照与不带 shim 的 assembleDebugAndroidTest）
+#   归负责人，见任务书 S4。
+diff --git a/src/syscall/seccomp.c b/src/syscall/seccomp.c
+index 198a2d1..3c8147b 100644
+--- a/src/syscall/seccomp.c
++++ b/src/syscall/seccomp.c
+@@ -424,7 +424,13 @@ static FilteredSysnum proot_sysnums[] = {
+ 	{ PR_unshare,		FILTER_SYSEXIT },
+ 	{ PR_setns,		FILTER_SYSEXIT },
+ 	{ PR_unlink,		0 },
+-	{ PR_unlinkat,		0 },
++	/* musl's remove(3) retries unlinkat(2) with AT_REMOVEDIR after an
++	 * EISDIR first call, reusing the path register as the kernel left
++	 * it.  Only the syscall-exit stage restores the registers PRoot
++	 * modified on enter, and under seccomp acceleration that stage is
++	 * skipped unless FILTER_SYSEXIT is set: without it the retry gets
++	 * the already-translated host path re-rooted and fails ENOENT.  */
++	{ PR_unlinkat,		FILTER_SYSEXIT },
+ 	{ PR_uselib,		0 },
+ 	{ PR_utime,		FILTER_SYSEXIT },
+ 	{ PR_utimensat,		0 },

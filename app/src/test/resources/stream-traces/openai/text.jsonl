@@ -1,0 +1,6 @@
+{"type":"textStart","id":"text-0"}
+{"type":"textDelta","text":"Hello"}
+{"type":"textDelta","text":" world"}
+{"type":"textEnd","id":"text-0"}
+{"type":"usageEvent","usage":{"input":12,"output":2,"cacheRead":0,"cacheWrite":0}}
+{"type":"completed","stopReason":"stop"}

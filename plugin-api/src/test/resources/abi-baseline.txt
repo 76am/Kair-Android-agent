@@ -1,0 +1,36 @@
+# ABI 基线（U47，2026-11-11 在 main @ 2a39dd33 上生成）
+#
+# 范围：plugin-api 主源集（dev.kair 全部接口）里**带默认实现**的成员 —— 即「旧插件不实现也语义正确」
+# 的那部分契约面。抽象成员不进基线（它们由 `PluginBinaryCompat` 运行期巡检与编译期覆盖）。
+#
+# 行格式：`接口简单名#成员名(参数类型简单名列表):返回类型简单名`
+# - suspend 函数按 JVM 字节码形态记录（末位参数是 Continuation，返回 Object）；
+# - val 成员记其 getter（`promptSnippet` → `getPromptSnippet`）。
+#
+# 维护规则（docs/插件接口契约.md §10.5）：
+# - 新增带默认实现的契约成员 → 本文件**必须**同步补条目（`JvmDefaultCompatibilityTest`
+#   的双向比对用例会红，照它的提示补）；
+# - 把默认成员改抽象 / 删除成员 → 同样红 —— 那是 ABI 破坏，须提升 `KairApi.VERSION` 并走破坏性变更流程；
+# - 基线只加不改节号这种事不存在：这是数据文件，直接编辑即可，但每笔改动都要能说出对应哪条契约变更。
+
+CommandRunner#containerWorkspacePathFor(File):String
+CommandRunner#getContainerWorkspacePath():String
+FileBackend#size(String,Continuation):Object
+Plugin#getVersion():String
+PluginContext#getAgents():AgentBridge
+PluginContext#getDataDir():File
+PluginContext#getScope():CoroutineScope
+PluginContext#onAgentEvent(Function1):void
+PluginContext#onDeactivate(Function0):void
+ProviderTransport#maxImagePixels(ProviderConfig):Long
+SettingField#getDescriptionRes():Integer
+SettingField#getLabelRes():Integer
+StorageBackend#workspaceBase():File
+Tool#getApprovableForever():boolean
+Tool#getApprovalKey():String
+Tool#getCategory():ToolCategory
+Tool#getPromptGuidelines():List
+Tool#getPromptSnippet():String
+Tool#getReadOnly():boolean
+Tool#getRequiresApproval():boolean
+Tool#isParallelSafe():boolean

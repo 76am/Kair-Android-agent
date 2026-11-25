@@ -1,0 +1,30 @@
+{"type":"reasoningStart","id":"reasoning-0","reasoningType":"REASONING_TEXT"}
+{"type":"reasoningDelta","text":"\n"}
+{"type":"reasoningDelta","text":"The"}
+{"type":"reasoningDelta","text":" user requested"}
+{"type":"reasoningDelta","text":" a response"}
+{"type":"reasoningDelta","text":" containing"}
+{"type":"reasoningDelta","text":" just"}
+{"type":"reasoningDelta","text":" the word \"OK"}
+{"type":"reasoningDelta","text":".\""}
+{"type":"reasoningDelta","text":" This"}
+{"type":"reasoningDelta","text":" means"}
+{"type":"reasoningDelta","text":" the"}
+{"type":"reasoningDelta","text":" assistant"}
+{"type":"reasoningDelta","text":" should reply with only"}
+{"type":"reasoningDelta","text":" that single word,"}
+{"type":"reasoningDelta","text":" and"}
+{"type":"reasoningDelta","text":" nothing more"}
+{"type":"reasoningDelta","text":". Prov"}
+{"type":"reasoningDelta","text":"iding exactly"}
+{"type":"reasoningDelta","text":" \"OK\" would"}
+{"type":"reasoningDelta","text":" meet"}
+{"type":"reasoningDelta","text":" the instruction and satisfy"}
+{"type":"reasoningDelta","text":" the user's requirement"}
+{"type":"reasoningDelta","text":"."}
+{"type":"reasoningEnd","id":"reasoning-0"}
+{"type":"textStart","id":"text-0"}
+{"type":"textDelta","text":"OK"}
+{"type":"textEnd","id":"text-0"}
+{"type":"usageEvent","usage":{"input":21,"output":50,"cacheRead":0,"cacheWrite":0}}
+{"type":"completed","stopReason":"stop"}

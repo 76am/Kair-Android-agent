@@ -1,0 +1,24 @@
+Kair
+Copyright 2026 Kair contributors
+
+This product includes software developed by third parties:
+
+- proot
+  https://github.com/termux/proot
+  License: GPL-2.0
+  Distributed as a separate executable process and loaded by the app at runtime.
+  The exact upstream revision, patches and build scripts are in
+  `scripts/build-proot.sh`, `patches/` and `docs/架构与内核边界.md` §9.
+
+- talloc 2.4.3
+  https://talloc.samba.org/
+  License: LGPL-3.0
+  Statically linked into the proot executable built by the scripts above.
+
+- Ubuntu base rootfs images
+  https://cdimage.ubuntu.com/ubuntu-base/
+  Downloaded by the app at runtime from user-selected public mirrors.
+  The images are not redistributed in this repository.
+
+- AndroidX / Jetpack Compose / Kotlin / kotlinx / OkHttp
+  Licenses: Apache-2.0

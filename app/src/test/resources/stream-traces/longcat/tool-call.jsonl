@@ -1,0 +1,25 @@
+{"type":"reasoningStart","id":"reasoning-0","reasoningType":"REASONING_TEXT"}
+{"type":"reasoningDelta","text":"\n"}
+{"type":"reasoningDelta","text":"The"}
+{"type":"reasoningDelta","text":" user is asking for"}
+{"type":"reasoningDelta","text":" the weather in Beijing"}
+{"type":"reasoningDelta","text":" and specifically requesting"}
+{"type":"reasoningDelta","text":" that I use the"}
+{"type":"reasoningDelta","text":" tool. I have"}
+{"type":"reasoningDelta","text":" a weather tool available"}
+{"type":"reasoningDelta","text":" that can get"}
+{"type":"reasoningDelta","text":" the"}
+{"type":"reasoningDelta","text":" current weather for a"}
+{"type":"reasoningDelta","text":" city. I need"}
+{"type":"reasoningDelta","text":" to call the"}
+{"type":"reasoningDelta","text":" get_weather function"}
+{"type":"reasoningDelta","text":" with \"Beijing"}
+{"type":"reasoningDelta","text":"\" as the city"}
+{"type":"reasoningDelta","text":" parameter."}
+{"type":"reasoningEnd","id":"reasoning-0"}
+{"type":"toolCallStarted","index":0,"id":"call_07b927e3c53e471c8aacc2f1","name":"get_weather"}
+{"type":"toolCallArgsDelta","index":0,"delta":"{\"city\": \"Beijing\""}
+{"type":"toolCallArgsDelta","index":0,"delta":"}"}
+{"type":"usageEvent","usage":{"input":155,"output":71,"cacheRead":0,"cacheWrite":0}}
+{"type":"toolCallsCompleted","calls":[{"id":"call_07b927e3c53e471c8aacc2f1","name":"get_weather","arguments":"{\"city\": \"Beijing\"}"}]}
+{"type":"completed","stopReason":"toolUse"}

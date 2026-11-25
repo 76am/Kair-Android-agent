@@ -1,0 +1,42 @@
+root = true
+
+[*.{kt,kts}]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = off
+ktlint_code_style = intellij_idea
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+# 与项目既有风格对齐：Compose 的 UI 组合函数按官方指南用大驼峰（docs/代码规范.md §3）。
+# 注意：该豁免覆盖**所有** @Composable（含返回值型），所以「返回值型 Composable 用小驼峰」
+# 没有机械守卫，只能靠评审兜底（见 docs/团队分工与交付流程.md §2.3）。
+ktlint_function_naming_ignore_when_annotated_with = Composable
+# 常量允许大驼峰（命名约定见 docs/代码规范.md §3），故关闭该规则的强制大写下划线形式。
+ktlint_standard_property-naming = disabled
+# 本项目表达式体函数一律换行书写；该规则会在 max_line_length=off 时把它们压成超长单行。
+ktlint_standard_function-signature = disabled
+
+# ---------------------------------------------------------------------------
+# 以下规则要求改写既有代码的换行 / 对齐方式，与当前排版不一致，先关闭。
+# 重新启用任何一条都必须单独提交（纯排版，不混功能改动），否则 diff 不可评审。
+# 关闭 wrapping 时必须一并关闭其依赖规则，否则 ktlint 会以
+# 「Skipping rule(s) which are depending on a rule which is not loaded」中断检查。
+# ---------------------------------------------------------------------------
+ktlint_standard_statement-wrapping = disabled
+ktlint_standard_wrapping = disabled
+# 与 ij_kotlin_allow_trailing_comma 的强制行为冲突，先关闭。
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+# 与现有的单行 if/else、Compose 多参数换行风格冲突。
+ktlint_standard_multiline-if-else = disabled
+ktlint_standard_argument-list-wrapping = disabled
+# 允许 KDoc 前有行注释（本仓库常见「先分区注释再 KDoc」）。
+ktlint_standard_discouraged-comment-location = disabled
+# 允许对齐赋值 / 参数，提升可读性。
+ktlint_standard_no-multi-spaces = disabled
+# 路由 / 面板文件名与其中类型名不完全对应（如 `KairNav.kt`）。
+ktlint_standard_filename = disabled

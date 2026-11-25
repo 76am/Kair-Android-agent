@@ -1,0 +1,16 @@
+<!-- 插话（引导）入口：描边圆角向上三角。需求 §2.4 要的就是这个形状；
+     `Icons.Filled.ChangeHistory` 实际是「时钟 + 回转箭头」，不是三角 —— 用它会让输入行
+     看起来像两个发送键（负责人 2026-11-01 指出）。需求 §3.2 也留了这条后路：自绘 vector。 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12,5.2L19.4,18.2L4.6,18.2Z"
+        android:strokeColor="#FF000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.8" />
+</vector>

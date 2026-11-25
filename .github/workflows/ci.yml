@@ -1,0 +1,72 @@
+name: CI
+
+# 只对 main 触发：程序员推 review 分支时不跑 CI，合并到 main 后再跑。
+# 目的：省 GitHub Actions 私有仓库免费额度（2000 分钟/月）。
+#
+# **U12 结论（2026-10-28，负责人决定）**：「给集成分支加 CI」被明确排除，只挂 main
+# 是**既定决策**而不是缺口。代价要写明白：收口前 main 落后集成分支一百多个提交，
+# 这条流水线对当前开发**零保护**（跑的是无关的老代码库）；**PR #18 合并后它才真正
+# 开始兜底**。验证发生在集成分支、由执行者的 A 层命令完成（`团队分工` §3.1）。
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+          # 必须显式给 packages：该 action 的默认列表里含已废弃的 legacy `tools` 包，
+          # sdkmanager 会报 "Failed to find package 'tools'" 并退出 1，整条流水线在
+          # 安装 SDK 这一步就挂了（单测与 ktlint 根本没机会跑）。另注：v3 不认
+          # `sdk-platform` / `build-tools` 这两个输入，写了只会收到 warning 被忽略。
+          packages: 'platforms;android-35 build-tools;34.0.0 platform-tools'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.14.5
+
+      - name: Check code style
+        run: ./gradlew ktlintCheck --no-daemon
+
+      # `assembleDebug` 与单测合在一次 gradle 调用里：两者共享 compileDebugKotlin，
+      # 分两步会重复编译（实测多花 30–60s）。它覆盖的是 test 抓不到的那一层 ——
+      # manifest 合并冲突 / 资源缺失 / 打包配置错误：这些只在真正出 APK 时才会暴露。
+      #
+      # 注意：本流水线**只在 main 触发**，而 main 目前落后集成分支一百多个提交，
+      # 所以它现在兜的是收尾后的主干，不是专项分支。别把它当成「专项有 CI 保护」。
+      - name: Build debug APK and run tests
+        run: |
+          ./gradlew :app:assembleDebug :plugin-api:test :app:testDebugUnitTest --no-daemon \
+            -Pandroid.aapt2FromMavenOverride=$ANDROID_HOME/build-tools/34.0.0/aapt2
+
+      # U15：CI 绿 ≠ B 层验过。打印逐类 skip，并让 9 个 Linux-only 类在 skipped≠0
+      # 或根本没出现在结果里时直接失败。清单与 LinuxOnlyGuardTest.allowed 对应。
+      - name: Check Linux-only classes ran (skip=0)
+        if: always()
+        run: python3 .github/scripts/check_test_skips.py
+
+      # 失败时也要留现场：XML 是判断「到底跑没跑」的唯一凭据（README / 团队分工 §3.1）。
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            app/build/test-results/testDebugUnitTest/**
+            app/build/reports/tests/testDebugUnitTest/**
+            plugin-api/build/test-results/test/**
+          if-no-files-found: warn

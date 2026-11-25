@@ -1,0 +1,11 @@
+{"type":"reasoningStart","id":"0","reasoningType":"REASONING_TEXT"}
+{"type":"reasoningDelta","text":"Let me think."}
+{"type":"reasoningEnd","id":"0"}
+{"type":"textStart","id":"1"}
+{"type":"textDelta","text":"Checking now."}
+{"type":"textEnd","id":"1"}
+{"type":"toolCallStarted","index":2,"id":"toolu_1","name":"echo"}
+{"type":"toolCallArgsDelta","index":2,"delta":"{\"text\":\"hi\"}"}
+{"type":"toolCallsCompleted","calls":[{"id":"toolu_1","name":"echo","arguments":"{\"text\":\"hi\"}"}]}
+{"type":"usageEvent","usage":{"input":40,"output":20,"cacheRead":0,"cacheWrite":0}}
+{"type":"completed","stopReason":"toolUse"}

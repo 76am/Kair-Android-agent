@@ -1,0 +1,982 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kair</string>
+
+    <!-- 通用 -->
+    <string name="action_back">返回</string>
+    <string name="action_close">关闭</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_confirm">确定</string>
+    <string name="action_create">创建</string>
+    <string name="action_delete">删除</string>
+    <string name="action_undo">撤销</string>
+    <string name="cd_rename">重命名</string>
+    <string name="rename_session_title">重命名会话</string>
+    <string name="action_expand">展开</string>
+    <string name="action_collapse">收起</string>
+
+    <!-- Linux 工作区（proot） -->
+    <string name="proot_state_not_installed">尚未安装 Linux rootfs。安装后 container_shell 工具将在 Ubuntu 22.04 容器中运行（自带 apt 包管理器；git / python / node 等按需 apt 安装）。下载约 28 MB。</string>
+    <string name="proot_hint_fallback">安装前只有 android_shell（Android 设备 shell / toybox）可用；安装完成后 container_shell 才会注册。</string>
+    <string name="proot_action_install">安装 Ubuntu rootfs</string>
+    <string name="proot_state_downloading">正在下载… %1$d%%</string>
+    <string name="proot_state_downloading_unknown">正在下载…</string>
+    <string name="proot_state_extracting">正在解包 rootfs…</string>
+    <string name="proot_state_ready">Ubuntu %1$s 已就绪，命令后端：Linux 容器</string>
+    <string name="proot_hint_ready">container_shell 工具的命令现已在容器内执行；项目工作区在容器 /projects 下（每个项目一个目录）。可用 apt install 安装软件包。</string>
+    <string name="proot_state_reinstall_required">检测到旧版 Linux rootfs（%1$s），需要重新安装 Ubuntu 22.04。</string>
+    <string name="proot_hint_reinstall_required">项目文件在宿主工作区、不会丢失；容器内用 apt 装的软件与 /root 会随旧 rootfs 一起清掉。</string>
+    <string name="proot_action_uninstall">卸载 rootfs</string>
+    <string name="proot_state_error">出错：%1$s</string>
+    <string name="proot_error_checksum">下载包 SHA256SUMS 校验失败，已删除该文件。可能是镜像未同步或文件被篡改，请换镜像后重试。</string>
+    <string name="proot_action_retry">重试</string>
+    <string name="proot_mirror_label">容器镜像（apt / pip）</string>
+    <string name="proot_mirror_hint">安装时写入 /etc/apt/sources.list 与 /etc/pip.conf；已安装的 rootfs 选中即生效，无需重装。</string>
+    <string name="proot_mirror_aliyun">阿里云</string>
+    <string name="proot_mirror_tuna">清华大学</string>
+    <string name="proot_mirror_ustc">中科大</string>
+    <string name="proot_mirror_huawei">华为云</string>
+    <string name="proot_mirror_official">官方源</string>
+    <string name="proot_devtools_title">开发工具</string>
+    <string name="proot_devtools_hint">在 Ubuntu 工作区一键安装常用工具（走容器内 apt，需要网络）。</string>
+    <string name="proot_devtools_checking">正在检测已安装的工具…</string>
+    <string name="proot_tool_installed">已安装</string>
+    <string name="proot_tool_install">安装</string>
+    <string name="proot_tool_installing">安装中…</string>
+    <string name="proot_tool_install_failed">安装失败：%1$s</string>
+    <string name="task_panel_hint">这里显示 agent 通过 background_task 启动的命令；完成后结果会自动回注到会话。</string>
+    <string name="task_panel_empty">当前没有后台任务。</string>
+    <string name="task_status_running">运行中</string>
+    <string name="task_status_succeeded">已完成</string>
+    <string name="task_status_failed">失败</string>
+    <string name="task_status_cancelled">已取消</string>
+    <string name="task_status_timed_out">已超时</string>
+    <!-- U49：进程死了且没留下退出码。与「已取消」区分：不是用户做的，用户需要知道服务已经没了。 -->
+    <string name="task_status_terminated">已终止</string>
+    <string name="task_action_cancel">取消任务</string>
+    <string name="task_cancel_title">取消后台任务？</string>
+    <string name="task_cancel_message">将结束任务 %1$s：\n%2$s</string>
+    <string name="task_log_show">查看输出</string>
+    <string name="task_log_hide">收起输出</string>
+    <string name="task_log_empty">（暂无输出）</string>
+    <string name="task_meta_running">已运行 %1$d 秒 · PID %2$d · 上限 %3$d 秒</string>
+    <!-- timeout=0 是不限时（常驻服务），共用上一条会印出「上限 0 秒」，会被读成「0 秒就超时」。 -->
+    <string name="task_meta_running_unbounded">已运行 %1$d 秒 · PID %2$d · 不限时</string>
+    <string name="task_meta_finished">耗时 %1$d 秒 · 退出码 %2$s</string>
+    <string name="task_meta_exit_unknown">未知</string>
+    <string name="task_meta_session">会话 %1$s</string>
+    <string name="proot_process_hint">只显示 Kair 容器内的进程；刷新为当前快照；持久进程 shell 不可在这里结束。「自启」的进程在 Kair 启动时自动拉起，Kair 退出即结束、状态不保留。</string>
+    <string name="proot_process_snapshot">当前进程</string>
+    <string name="proot_process_refresh">刷新</string>
+    <string name="proot_process_refreshing">正在读取进程…</string>
+    <string name="proot_process_empty">当前没有容器进程。</string>
+    <string name="proot_process_no_rootfs">rootfs 未就绪，先到「Linux 工作区」安装。</string>
+    <string name="proot_process_no_channel">容器通道不可用，当前可能回退到本地 shell。</string>
+    <string name="proot_process_load_failed">读取进程失败：%1$s</string>
+    <string name="proot_process_kill">结束</string>
+    <string name="proot_process_kill_title">结束进程？</string>
+    <string name="proot_process_kill_message">将结束 PID %1$d：\n%2$s</string>
+    <string name="proot_process_kill_failed">结束失败：%1$s</string>
+    <string name="proot_process_kill_all">全部结束</string>
+    <string name="proot_process_kill_all_title">结束全部容器进程？</string>
+    <string name="proot_process_kill_all_message">将结束当前可结束的容器进程（%1$d 个）。持久进程 shell 不受影响，仍由「Linux 工作区」的停止按钮管理。</string>
+    <string name="proot_process_kill_all_failed">结束失败：%1$s</string>
+    <string name="proot_process_protect">自启</string>
+    <string name="proot_process_unprotect">取消自启</string>
+    <string name="proot_process_protected">自启 · Kair 启动时自动拉起；退出即结束，状态不保留</string>
+    <string name="proot_process_session_shell">持久进程 shell（不可在这里结束）</string>
+    <string name="proot_process_meta">PID %1$d · PPID %2$d · %3$d KB</string>
+    <string name="proot_session_title">持久进程</string>
+    <string name="proot_session_none">持久进程尚未就绪：退出面板重进或重启应用后再试。</string>
+
+    <!-- 容器挂载手机共享存储 -->
+    <string name="container_sdcard_label">挂载手机存储（/sdcard）</string>
+    <string name="container_sdcard_ready">已挂载：容器内通过 /sdcard 读写手机共享存储（下条命令起生效）。</string>
+    <string name="container_sdcard_no_access">未获得「所有文件访问」权限，暂不挂载；授权后自动生效。</string>
+    <string name="container_sdcard_grant">去授权</string>
+
+    <!-- 常驻会话状态（终端 / Linux 工作区面板共用） -->
+    <string name="session_state_stopped">未启动</string>
+    <string name="session_state_starting">启动中…</string>
+    <string name="session_state_running">运行中</string>
+    <string name="session_state_stopping">停止中…</string>
+    <string name="session_state_error">持久进程异常</string>
+    <string name="session_action_retry">重试</string>
+    <string name="session_projects_root">项目根目录：/projects（新建项目即时可见）</string>
+
+    <!-- 终端插件（U83：行式终端已删除，只剩 PTY 一条渲染路径） -->
+    <string name="terminal_no_session">持久进程未就绪</string>
+    <string name="terminal_no_session_hint">持久进程正在启动或启动失败；请稍候，或到「Linux 工作区」面板查看。</string>
+    <string name="terminal_not_running">持久进程未运行；请稍候，或到「Linux 工作区」面板查看。</string>
+    <string name="terminal_restart_session">重启会话</string>
+    <string name="terminal_stalled_hint">上一条命令超时未返回，会话可能已卡住；可点「重启会话」恢复。</string>
+    <string name="terminal_pty_input">终端输入区</string>
+    <string name="terminal_pty_exited">Shell 已退出；可点「重启会话」重新打开。</string>
+    <string name="terminal_pty_starting">正在打开终端…</string>
+
+    <!-- 图形桌面面板（U86；U89 §F 起画面直读 Xvfb 帧缓冲，输入走容器内 xdotool） -->
+    <string name="desktop_plugin_name">图形桌面</string>
+    <string name="desktop_plugin_description">在容器里运行的 X11 桌面（Xvfb + jwm），画面由 App 直读共享帧缓冲。</string>
+    <string name="desktop_no_session">容器会话未就绪；先到「Linux 工作区」安装并启动会话。</string>
+    <string name="desktop_empty_hint">桌面环境未安装 · 下载约 %1$d MB / 装后约 %2$d MB / 安装峰值需约 %3$d MB 空闲空间</string>
+    <string name="desktop_installed_hint">桌面环境已安装 · 直接启动即可</string>
+    <string name="desktop_checking">检测环境中…</string>
+    <string name="desktop_install_start">安装并启动</string>
+    <string name="desktop_start">启动桌面</string>
+    <string name="desktop_installing">正在下载依赖：已取回 %1$d MB</string>
+    <string name="desktop_connecting">正在连接…</string>
+    <string name="desktop_waiting_frame">已连上，正在等待画面…</string>
+    <string name="desktop_failed">桌面启动失败：%1$s</string>
+    <string name="desktop_session_lost">容器会话已中断（%1$s），桌面已停止。重启会话后可重新启动桌面。</string>
+    <string name="desktop_frame_failed">画面读取失败：%1$s</string>
+    <string name="desktop_link_lost">画面连接已断开</string>
+    <string name="desktop_reconnect">重新连接</string>
+    <string name="desktop_retry">重试</string>
+    <string name="desktop_menu_restart">重启桌面</string>
+    <string name="desktop_menu_scale">缩放模式</string>
+    <string name="desktop_menu_resolution">分辨率</string>
+    <string name="desktop_menu_resolution_format">分辨率 · %1$s</string>
+    <string name="desktop_resolution_sharp">高清</string>
+    <string name="desktop_resolution_balanced">均衡</string>
+    <string name="desktop_resolution_smooth">流畅</string>
+    <string name="desktop_resolution_sharp_hint">2/3 分辨率 · 默认，画面最清晰</string>
+    <string name="desktop_resolution_balanced_hint">1/2 分辨率 · 像素约少 44%</string>
+    <string name="desktop_resolution_smooth_hint">1/3 分辨率 · 像素约少 75%，游戏优先</string>
+    <string name="desktop_resolution_restart_hint">切换后桌面会重启，正在运行的程序会退出。</string>
+    <string name="desktop_menu_stop">停止桌面</string>
+    <string name="desktop_menu_remove_env">移除桌面环境</string>
+    <string name="desktop_menu_status">状态</string>
+    <string name="desktop_status_format">%1$d×%2$d · %3$s</string>
+    <string name="desktop_fps_format">%1$d fps</string>
+    <string name="desktop_state_connected">已连接</string>
+    <string name="desktop_state_connecting">连接中</string>
+    <string name="desktop_state_failed">连接失败</string>
+    <string name="desktop_cd_menu">桌面菜单</string>
+    <string name="desktop_cd_keyboard">键盘开关</string>
+    <string name="desktop_cd_scale">缩放切换</string>
+    <string name="desktop_cd_exit">关闭面板</string>
+    <string name="desktop_key_newline">换行</string>
+    <string name="desktop_key_fkeys">F1–F12</string>
+    <string name="desktop_confirm_restart_title">重启桌面？</string>
+    <string name="desktop_confirm_restart_message">桌面会先停止再重新启动，正在运行的程序会退出。确定重启吗？</string>
+    <string name="desktop_confirm_stop_title">停止桌面？</string>
+    <string name="desktop_confirm_stop_message">桌面里正在运行的程序会全部退出，之后可以重新启动。确定停止吗？</string>
+    <string name="desktop_confirm_remove_title">移除桌面环境？</string>
+    <string name="desktop_confirm_remove_message">将卸载桌面组件并删除桌面配置，此操作不可恢复。确定移除吗？</string>
+
+    <!-- MCP 服务器 -->
+    <string name="mcp_panel_hint">MCP 服务器的工具会自动进入 agent 工具集，供模型按名调用。stdio 服务器运行在 Linux 容器内。</string>
+    <string name="mcp_add">添加服务器</string>
+    <string name="mcp_import">导入配置</string>
+    <string name="mcp_empty">还没有 MCP 服务器。可以手动添加、粘贴 mcpServers 配置，或让 agent 用 mcp_manage 安装。</string>
+    <string name="mcp_tools_title">工具（%1$d）</string>
+    <string name="mcp_test">测试连接</string>
+    <string name="mcp_edit">编辑</string>
+    <string name="mcp_delete">删除</string>
+    <string name="mcp_save">保存</string>
+    <string name="mcp_cancel">取消</string>
+    <string name="mcp_status_idle">未连接</string>
+    <string name="mcp_status_disabled">已停用</string>
+    <string name="mcp_status_connecting">连接中…</string>
+    <string name="mcp_status_connected">已连接，%1$d 个工具</string>
+    <string name="mcp_status_error">连接失败：%1$s</string>
+    <string name="mcp_test_ok">连接成功，发现 %1$d 个工具。</string>
+    <string name="mcp_test_failed">连接失败：%1$s</string>
+    <string name="mcp_editor_add_title">添加 MCP 服务器</string>
+    <string name="mcp_editor_edit_title">编辑 MCP 服务器</string>
+    <string name="mcp_field_name">服务器名（工具命名空间）</string>
+    <string name="mcp_field_url">URL（http / sse）</string>
+    <string name="mcp_field_command">启动命令（stdio）</string>
+    <string name="mcp_field_args">参数，每行一个</string>
+    <string name="mcp_field_env">环境变量，每行 KEY=VALUE</string>
+    <string name="mcp_field_cwd">工作目录（默认项目工作区）</string>
+    <string name="mcp_field_headers">请求头，每行 Key: Value</string>
+    <string name="mcp_field_description">简介（可选）</string>
+    <string name="mcp_field_timeout">请求超时（秒，5–600）</string>
+    <string name="mcp_field_enabled">启用</string>
+    <string name="mcp_import_title">导入 MCP 配置</string>
+    <string name="mcp_import_hint">粘贴 mcpServers JSON（与 Claude / Cursor 格式相同），同名服务器会被替换。</string>
+    <string name="mcp_import_action">导入</string>
+
+    <!-- 项目列表 -->
+    <string name="projects_title">Kair 项目</string>
+    <string name="projects_empty">还没有项目，先创建一个。</string>
+    <string name="projects_none_title">还没有项目</string>
+    <string name="projects_new">新建项目</string>
+    <string name="projects_rename">重命名项目</string>
+    <string name="cd_project_actions">项目操作</string>
+    <string name="projects_name_label">项目名称</string>
+    <string name="project_name_blank">项目名不能为空</string>
+    <string name="project_name_duplicate">已有同名项目，换一个名字</string>
+    <string name="project_rename_busy">这个项目有正在运行的会话或后台任务，停止后再改名</string>
+    <string name="project_rename_failed">改名失败：工作区目录无法移动，请重试</string>
+    <string name="project_create_failed">新建失败：无法写入项目索引，请重试</string>
+    <string name="cd_plugins">插件</string>
+    <string name="cd_settings">设置</string>
+    <string name="cd_sessions">会话列表</string>
+    <string name="cd_delete">删除</string>
+
+    <!-- 会话列表 -->
+    <string name="sessions_new">新建会话</string>
+    <string name="sessions_name_label">会话名称</string>
+    <string name="sessions_current">当前</string>
+    <!-- 抽屉分段（U115 返工）：项目 → 会话，箭头只是分隔符、不进文案。 -->
+    <string name="drawer_tab_projects">项目</string>
+    <string name="drawer_tab_sessions">会话</string>
+    <string name="drawer_empty_sessions">%1$s 还没有会话</string>
+    <string name="sessions_group_today">今天</string>
+    <string name="sessions_group_yesterday">昨天</string>
+    <string name="sessions_group_earlier">更早</string>
+    <string name="sessions_auto_hint">发第一条消息，会自动创建会话。</string>
+    <string name="chat_draft_title">新会话</string>
+    <string name="chat_empty_hint">还没有消息，说点什么吧。</string>
+    <!-- 空会话建议入口（U105）：点一下填入输入框，不直接发送。 -->
+    <string name="chat_suggestion_files">看看工作区里有什么</string>
+    <string name="chat_suggestion_tools">装一个开发工具</string>
+    <string name="chat_suggestion_explain">解释当前项目结构</string>
+
+    <!-- 回合折叠与面板快捷入口（设计稿 v2） -->
+    <string name="chat_turn_processed">已处理 %1$d 步</string>
+    <string name="chat_turn_steps">%1$d 步</string>
+    <string name="chat_turn_running">运行中</string>
+    <string name="chat_turn_failed">%1$d 失败</string>
+    <string name="chat_turn_denied">%1$d 被拒</string>
+    <string name="chat_step_label">第 %1$d 步</string>
+    <string name="chat_step_label_failed">第 %1$d 步 · 失败</string>
+    <string name="chat_step_title">第 %1$d 步 · %2$d 条消息</string>
+    <string name="chat_step_retry">重试这一步</string>
+    <string name="chat_step_delete">删除这一步及之后</string>
+    <string name="chat_step_copy">复制本步文本</string>
+    <string name="chat_quick_entry">面板快捷入口</string>
+    <string name="chat_quick_hint">快捷入口来自插件贡献点。插件被禁用时对应格子自动消失，不留「点了没反应」的空位。</string>
+
+    <!-- 新用户引导（U104） -->
+    <string name="onboarding_s0_hint">创建后配置一个模型，就能开始对话。</string>
+    <string name="onboarding_no_model">还没有可用模型</string>
+    <string name="sessions_delete_confirm_title">删除会话</string>
+    <string name="sessions_delete_confirm_message">将删除会话「%1$s」及其全部对话记录，此操作不可恢复。确定删除吗？</string>
+    <string name="projects_delete_confirm_title">删除项目</string>
+    <string name="projects_delete_confirm_message">将删除项目「%1$s」及其名下全部会话、对话记录与工作区文件，此操作不可恢复。确定删除吗？</string>
+
+    <!-- 对话 -->
+    <string name="chat_missing">未找到会话。</string>
+    <string name="chat_subagents">%1$d 个子智能体</string>
+    <string name="chat_input_placeholder">给 Kair 发消息…</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_stop">停止</string>
+    <string name="chat_stopping">正在停止…</string>
+    <!-- 运行态状态条（U58 ②）：常驻，覆盖「工具结果已回、下一段输出未到」的空档。 -->
+    <string name="chat_state_idle">待机</string>
+    <string name="chat_running">正在运行…</string>
+    <!-- 解码速度（U111）：实时值在状态条，平均值在折叠头 / 状态条待机行 / 上下文面板。 -->
+    <string name="chat_speed_waiting">正在生成…</string>
+    <string name="chat_speed_live">正在生成 · %1$s tok/s</string>
+    <string name="chat_speed_turn_avg">均 %1$s tok/s</string>
+    <!-- 带主语的均速：上下文面板用（单独一个「均」字分不清是哪一轮）。 -->
+    <string name="chat_speed_turn_avg_label">本轮均速 %1$s tok/s</string>
+    <!-- 状态条后缀（U115 返工）：常驻的是本会话均速，本轮那个数留在回合折叠头与上下文面板。 -->
+    <string name="chat_speed_session_avg_label">本会话均速 %1$s tok/s</string>
+    <string name="chat_speed_context_output">输出 %1$d tok</string>
+    <string name="chat_speed_context_decode">解码耗时 %1$s</string>
+    <string name="chat_speed_context_ttft">首字延迟 %1$s</string>
+    <string name="chat_speed_context_session">本会话均速 %1$s tok/s</string>
+    <!-- 停止确认（§B5.6 第 7 条）：abort() 会 clearQueue() 丢掉排队的引导消息，必须在点下去之前问。 -->
+    <string name="chat_stop_confirm_title">停止会丢弃这些还没发出的消息</string>
+    <string name="chat_stop_confirm_body">当前回合会被中止，下面 %1$d 条还没发出的消息会一并丢弃、不会被发送：</string>
+    <string name="chat_stop_confirm_image_only">（仅图片）</string>
+    <string name="chat_stop_confirm_more">其余 %1$d 条…</string>
+    <string name="chat_stop_confirm_note">停止后仍可以继续发消息，新消息会在收尾结束后自动接上。</string>
+    <string name="chat_stop_confirm_action">仍要停止</string>
+    <string name="chat_stop_confirm_keep">继续运行</string>
+    <string name="chat_scroll_to_bottom">回到最新消息</string>
+    <string name="chat_thinking">思考过程</string>
+    <!-- 轨道上的「谁」。它们是说话人标签，不是称谓：你 = 朱红、Kair = 青碧 -->
+    <string name="chat_who_you">你</string>
+    <string name="chat_who_agent">Kair</string>
+    <string name="chat_tool_call">调用 %1$s</string>
+    <string name="chat_tool_failed">失败</string>
+    <string name="tool_running">运行中</string>
+    <!-- U112：参数还没收齐（半截 JSON）时不能说「运行中」—— 工具还没开始跑 -->
+    <string name="tool_writing_args">参数写入中</string>
+    <string name="chat_tool_input">输入</string>
+    <string name="chat_tool_output">输出</string>
+    <string name="chat_tool_truncated">… 内容过长，仅显示前 %1$d 个字符</string>
+    <!-- U108：流式长文本只保留最近一段，尾部永远是最新内容 -->
+    <string name="chat_tail_window">仅保留最近 %1$dk</string>
+    <string name="chat_tail_latest">回到最新</string>
+    <!-- U100：注行不再报行数（头行右侧换成 token），`N 行` 一并退场 -->
+    <string name="tool_group_expand_rest">展开其余 %1$d 次</string>
+    <!-- 工具折叠块概览：同类调用计成一句话 -->
+    <string name="tool_group_command">执行 %1$d 次命令</string>
+    <string name="tool_group_read">读取 %1$d 个文件</string>
+    <string name="tool_group_edit">编辑 %1$d 个文件</string>
+    <string name="tool_group_browse">浏览 %1$d 个目录</string>
+    <string name="tool_group_search">搜索 %1$d 次文件</string>
+    <string name="tool_group_subagent">子智能体 %1$d 次</string>
+    <string name="tool_group_skill">加载 %1$d 个技能</string>
+    <string name="tool_group_plugin">插件操作 %1$d 次</string>
+    <string name="tool_group_ask">向你提问 %1$d 次</string>
+    <string name="tool_group_other">调用 %1$d 个工具</string>
+    <string name="tool_group_failed">失败 %1$d 个</string>
+    <string name="tool_group_separator">、</string>
+    <string name="chat_edit">编辑</string>
+    <string name="chat_edit_title">编辑消息</string>
+    <string name="chat_edit_hint">保存后将从这条消息重新开始，后续内容会被丢弃。</string>
+    <string name="chat_save">保存</string>
+    <string name="chat_copy">复制</string>
+    <string name="chat_select_text">选取文字</string>
+    <string name="markdown_table">表格</string>
+    <string name="markdown_table_writing">表格写入中</string>
+    <string name="markdown_code">代码</string>
+    <string name="markdown_copied">已复制</string>
+    <string name="chat_select_text_title">选取文字</string>
+    <string name="chat_message_actions">消息操作</string>
+    <string name="chat_copied">已复制到剪贴板</string>
+    <string name="chat_retry">重试</string>
+    <string name="stop_reason_stop">已结束</string>
+    <string name="stop_reason_tool_use">工具输出结束</string>
+    <string name="stop_reason_length">输出被截断</string>
+    <string name="stop_reason_error">出错</string>
+    <string name="stop_reason_aborted">已中止</string>
+    <string name="stop_reason_step_limit">已达步数上限</string>
+    <string name="stop_reason_empty_response">空回复</string>
+    <string name="stop_reason_session_closed">会话已关闭</string>
+    <!-- 未知值（provider 漏映射 / 旧日志的别的拼法）：包一层中文，原值留着便于认 -->
+    <string name="stop_reason_other">已结束（%1$s）</string>
+    <string name="chat_delete">删除这条及之后</string>
+    <string name="chat_deleted_count">已删除 %1$d 条消息</string>
+    <string name="chat_delete_from_title">删除这条及之后 %1$d 条？</string>
+    <string name="chat_delete_from_message">将从这条重新开始，之后的内容会被移除；磁盘上的工具副作用不会还原。</string>
+    <string name="chat_draft_image_lost">图片未能保留：草稿只恢复了文字，请重新附加图片</string>
+    <string name="chat_more_actions">更多操作</string>
+    <string name="request_export_title">导出请求</string>
+    <string name="request_export_pick">保留的 %1$d 次请求（由新到旧）：</string>
+    <string name="request_export_entry">%1$s · %2$s · 约 %3$d KB</string>
+    <string name="request_export_status">状态码 %1$d</string>
+    <string name="request_export_no_status">未收到响应</string>
+    <string name="request_export_stream_failed">流异常结束</string>
+    <string name="request_export_stream_failed_reason">流异常结束：%1$s</string>
+    <string name="request_export_meta">状态码 %1$d · 请求体约 %2$d KB</string>
+    <string name="request_export_meta_no_status">未收到响应 · 请求体约 %1$d KB</string>
+    <string name="request_export_include_images">包含图片原始数据（体积可能很大）</string>
+    <string name="request_export_images_dropped">该请求体积超出内存上限，图片数据未保留，导出的是脱敏版。</string>
+    <string name="request_export_body_skipped">请求体过大，未捕获（只记录端点与状态）</string>
+    <string name="request_export_to">写入 %1$s</string>
+    <string name="request_export_action">导出</string>
+    <string name="request_export_close">关闭</string>
+    <string name="request_export_done">已导出：%1$s</string>
+    <string name="request_export_failed">导出失败：无法写入下载目录</string>
+    <string name="request_log_empty">本次运行还没有记录到请求。跑一次对话后回来查看。</string>
+    <string name="request_log_scope">本次运行共保留 %1$d 条请求（仅内存，约 %2$d MB 上限，重启后清空）</string>
+    <string name="request_log_group">%1$s · %2$s</string>
+    <string name="request_log_unknown_session">未知会话 %1$s</string>
+    <string name="request_log_subagent">子智能体 · %1$s</string>
+    <string name="request_log_export">导出请求（用于错误反馈）</string>
+    <string name="request_log_clear">清空全部</string>
+    <string name="request_log_clear_title">清空请求缓冲</string>
+    <string name="request_log_clear_message">只清空内存里的请求副本，不影响会话文件。清空后无法再导出这些请求。</string>
+    <string name="request_log_cleared">已清空请求缓冲</string>
+    <string name="chat_rewrite_title">确认撤回</string>
+    <string name="chat_rewrite_message">撤回范围内的这些工具已经被调用过（如下）。撤回只会丢弃对话内容，不会撤销磁盘 / 环境的实际改动：\n\n%1$s\n\n仍要撤回并重新运行吗？</string>
+    <string name="chat_rewrite_confirm">仍要撤回</string>
+    <string name="chat_compacted">上下文检查点</string>
+    <string name="chat_compacted_hint">此前对话已被压缩为摘要。</string>
+    <string name="chat_compacted_done">上下文已压缩：%1$s → %2$s</string>
+    <string name="chat_system_note">系统提示</string>
+    <string name="chat_compact_now">压缩上下文</string>
+    <string name="chat_compact_confirm_title">压缩上下文</string>
+    <string name="chat_compact_confirm_message">将把当前已有的对话折叠成一份检查点摘要，之后从摘要继续（更早的原文不再逐条回灌），以腾出上下文空间。对话不会被删除，但摘要会替代原内容参与后续对话。确定压缩吗？</string>
+    <string name="chat_compact_confirm_action">压缩</string>
+    <string name="slot_confirm_default_message">确定执行「%1$s」吗？</string>
+    <string name="chat_queue_title">引导中（%1$d）</string>
+    <string name="chat_queue_hint">将在下一步（工具结果后）随请求一起发送</string>
+    <string name="chat_queue_hint_follow_up">将在本回合结束后作为新回合发送</string>
+    <string name="chat_queue_recall">撤回编辑</string>
+    <string name="chat_queue_promote">改为立即插话</string>
+    <string name="chat_queue_remove">移除</string>
+    <string name="chat_context_usage">上下文 %1$s / %2$s</string>
+    <string name="chat_cache_hit">缓存命中 %1$d%%</string>
+    <string name="chat_compacting">正在压缩上下文…</string>
+    <string name="chat_commands">命令</string>
+
+    <!-- 多模态图片 -->
+    <string name="chat_attach_image">附加图片</string>
+    <string name="chat_image_attached">已选择图片</string>
+    <string name="chat_image_remove">移除图片</string>
+    <string name="chat_image">图片</string>
+    <string name="chat_image_unavailable">图片不可用</string>
+
+    <!-- 输入框底部 UI 区 -->
+    <string name="chat_model_label">模型</string>
+    <string name="chat_model_empty">未配置模型</string>
+    <string name="chat_select_model">选择模型</string>
+    <string name="chat_reasoning_label">思考强度</string>
+    <string name="chat_select_reasoning">选择思考强度</string>
+    <string name="chat_reasoning_auto">自动</string>
+    <string name="chat_context_title">上下文用量</string>
+    <string name="chat_context_detail_ratio">占用 %1$d%%</string>
+    <string name="chat_context_detail_threshold">自动压缩：预留 %1$s</string>
+    <string name="chat_context_detail_keep">保留原文：%1$s</string>
+    <string name="chat_context_detail_hint">估算用量超过「窗口 − 预留」时自动压缩；压缩后保留最近的原文（默认按回合，单回合超预算 2 倍时切到步骤边界）。</string>
+
+    <!-- 设置 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_provider">服务商</string>
+    <string name="settings_provider_change">更换</string>
+    <string name="settings_choose_provider">选择服务商</string>
+    <string name="settings_protocol">协议</string>
+    <string name="settings_choose_protocol">选择协议</string>
+    <string name="settings_protocol_hint">直接粘贴完整接口地址会自动识别协议；识别不准时可手动切换。</string>
+    <string name="settings_transport_gemini_native">Gemini 原生</string>
+    <string name="settings_base_url">接口地址（Base URL）</string>
+    <string name="settings_api_key">API 密钥</string>
+    <string name="settings_model">模型</string>
+    <string name="settings_agent">智能体</string>
+    <string name="settings_max_steps">最大智能体步数</string>
+    <string name="settings_temperature">温度（留空 = 服务商默认）</string>
+    <string name="settings_addendum">附加系统指令</string>
+    <string name="settings_addendum_hint">全局生效：追加到每个会话的系统提示末尾，不分项目。想改助手的「身份定义」（开场白），请到插件页的「提示词预设」按项目绑定。</string>
+
+    <!-- 提示词预设面板：按项目绑定身份提示词 -->
+    <string name="prompt_presets_hint">为每个项目绑定一套「身份」提示词。这里只能改开场白；输出路径、工具清单、行为规则、工作目录等段落由内核锁定，避免改错后静默出错。</string>
+    <string name="prompt_presets_effective_hint">保存后下一回合生效（保存会顺手清一次提示段缓存，不受「每回合刷新系统提示段」开关影响）。</string>
+    <string name="prompt_presets_project">选择项目</string>
+    <string name="prompt_presets_no_projects">还没有项目。先在首页建一个项目，再回来给它选提示词。</string>
+    <string name="prompt_presets_current">当前使用</string>
+    <string name="prompt_presets_current_builtin">内置默认身份（编程助手）</string>
+    <string name="prompt_presets_current_bound">当前身份：%1$s</string>
+    <string name="prompt_presets_current_disabled">已绑定「%1$s」，但该预设已停用 → 使用内置身份</string>
+    <string name="prompt_presets_current_empty">已绑定「%1$s」，但正文为空 → 使用内置身份</string>
+    <string name="prompt_presets_library">预设库</string>
+    <string name="prompt_presets_view">查看</string>
+    <string name="prompt_presets_builtin_name">内置默认</string>
+    <string name="prompt_presets_builtin_desc">系统自带的编程助手开场白。</string>
+    <string name="prompt_presets_use">使用</string>
+    <string name="prompt_presets_in_use">使用中</string>
+    <string name="prompt_presets_new">新建预设</string>
+    <string name="prompt_presets_name_hint">预设名称</string>
+    <string name="prompt_presets_create">创建</string>
+    <string name="prompt_presets_edit_title">编辑预设</string>
+    <string name="prompt_presets_enabled">启用该预设</string>
+    <string name="prompt_presets_text_placeholder">留空 → 使用内置开场白</string>
+    <string name="prompt_presets_edit_hint">这段文字会替换系统提示的开场白（身份），例如「你是一位陪聊伙伴」。不要在这里重复工具用法。</string>
+    <string name="prompt_presets_locked_hint">输出路径、工具清单、行为规则、工作目录等段落锁定，不可在此修改。</string>
+    <string name="prompt_presets_state_disabled">已停用 → 绑定项目使用内置身份</string>
+    <string name="prompt_presets_state_empty">正文为空 → 使用内置身份</string>
+    <string name="prompt_presets_state_active">已启用（%1$d 字）</string>
+    <string name="prompt_presets_rename">重命名</string>
+    <string name="prompt_presets_delete_blocked">删除（被项目使用中）</string>
+    <string name="prompt_presets_delete_title">删除预设</string>
+    <string name="prompt_presets_delete_message">确定删除「%1$s」？</string>
+    <string name="prompt_presets_empty">还没有预设。点「新建预设」写一套身份提示词。</string>
+    <string name="prompt_presets_discard">放弃未保存的修改？</string>
+    <string name="prompt_presets_discard_confirm">放弃</string>
+    <string name="settings_subagent_model">子智能体模型</string>
+    <string name="settings_subagent_model_follow">跟随会话模型</string>
+    <string name="settings_subagent_model_hint">子智能体默认用的模型。选「跟随会话模型」时继承发起委派的会话的模型（旧行为）。适合把子智能体固定在便宜的模型上；单次运行还可以在子智能体调用时用 model 参数覆盖。</string>
+    <string name="settings_subagent_model_missing">原定模型已不存在，现按下一层（跟随会话模型）解析</string>
+    <string name="settings_subagent_reasoning">子智能体思考强度</string>
+    <string name="settings_subagent_reasoning_follow">跟随模型配置</string>
+    <string name="settings_subagent_reasoning_follow_value">跟随模型配置（%1$s）</string>
+    <string name="settings_subagent_reasoning_pick_model">先选定子智能体模型，才能单独覆盖思考强度</string>
+    <string name="settings_subagent_reasoning_unavailable">所选模型没有可单独设置的思考档位</string>
+    <string name="settings_subagent_reasoning_stale">该档位在当前模型上不可用，实际会按模型配置解析</string>
+    <string name="settings_subagent_reasoning_hint">只影响子智能体，不改所选模型本身的默认档位。选项来自该模型已勾选的思考强度；「自动」表示不发送思考参数。</string>
+    <string name="settings_plugin_compat_strict">严格校验插件兼容性</string>
+    <string name="settings_plugin_compat_strict_hint">安装第三方插件前检查其声明的 Kair 版本范围与插件 API；不兼容时拒绝安装（可在插件页对单个插件强制安装）。关闭后仅告警放行。</string>
+    <string name="settings_refresh_prompt_every_turn">每回合刷新系统提示段</string>
+    <string name="settings_refresh_prompt_every_turn_hint">系统提示段的缓存只看贡献点的输入（cwd、工作区路径、工具列表等），看不到插件读的文件内容（如记忆插件读的 .kair/memory.md）。开启时每回合请求前重新构造提示段，纯聊天也会刷新，后台子智能体刚改写的记忆下一回合即生效；关闭后只在压缩上下文、重启应用或手动保存插件文件时刷新，期间插件可能读到旧值。外部状态没变时重算出来的文字逐字相同，不会破坏缓存前缀。</string>
+
+    <!-- 工作区权限（设置页手动入口） -->
+    <string name="settings_permissions">工作区文件权限</string>
+    <string name="settings_permissions_check">检查并修复</string>
+    <string name="settings_permissions_full">修复项目全部文件</string>
+    <string name="settings_permissions_full_named">修复「%1$s」全部文件</string>
+    <string name="settings_permissions_full_needs_session">需先在会话列表打开一个会话，才能确定修哪个项目。</string>
+    <string name="settings_permissions_running">正在处理…</string>
+    <string name="settings_permissions_normal">权限正常</string>
+    <string name="settings_permissions_repaired">已修复 %1$d 项</string>
+    <string name="settings_permissions_failed">已修复 %1$d 项，%2$d 项失败（不可读或为目录，需 root 通道）</string>
+
+    <!-- 设备权限（Root / su 探测：冷启动自动一次，设置页按钮可重测） -->
+    <string name="settings_device_permissions">设备权限</string>
+    <string name="settings_root_title">Root 访问</string>
+    <string name="settings_root_hint">冷启动时自动检测一次，也可点按钮重测。首次检测会弹 Root 管理器授权；结论会在下一回合作为系统提示告诉模型。</string>
+    <string name="settings_root_undetected">未检测</string>
+    <string name="settings_root_probe">检测 Root</string>
+    <string name="settings_root_probing">检测中…</string>
+    <string name="settings_root_granted">已授权：android_shell 可以执行 su -c</string>
+    <string name="settings_root_no_su">未找到 su：设备未 root，或 Root 管理器隐藏了 su</string>
+    <string name="settings_root_denied">已被拒绝：su 存在，但 Root 管理器拒绝了授权</string>
+    <string name="settings_root_timeout">等待授权超时：允许弹窗后再检测一次</string>
+
+    <!-- 上下文压缩（内置插件面板；插件详情页与设置页双入口共用同一份文案） -->
+    <string name="settings_compaction_enabled">自动压缩</string>
+    <string name="settings_compaction_enabled_desc">上下文接近模型窗口上限时自动压缩成摘要。</string>
+    <string name="settings_compaction_model">压缩模型</string>
+    <string name="settings_compaction_model_desc">写摘要用的模型，默认跟随当前会话模型。可以固定到更便宜的模型；它的上下文窗口需要装得下摘要请求，否则会退化为机械检查点。</string>
+    <string name="settings_model_follow_session">跟随当前会话模型</string>
+    <string name="settings_compaction_reserve">压缩预留 token</string>
+    <string name="settings_compaction_reserve_desc">预留给模型自身输出的 token；上下文估算超过「窗口 − 该值」时触发压缩，故越大越早触发。</string>
+    <string name="settings_compaction_keep">压缩保留近期 token</string>
+    <string name="settings_compaction_keep_desc">压缩后大致保留多少近期原文不摘要；越大保留越多、压缩越轻。</string>
+
+    <!-- 多模型配置 -->
+    <string name="settings_models_empty_title">先添加一个模型</string>
+    <string name="settings_models_empty_desc">Kair 通过 OpenAI 兼容接口调用模型，填地址、密钥和模型名就能用。</string>
+    <string name="settings_models_add">添加模型</string>
+    <string name="settings_models_active">当前默认</string>
+    <string name="settings_models_new">新建模型</string>
+    <string name="settings_models_edit">编辑模型</string>
+    <string name="settings_model_name">显示名称</string>
+    <string name="settings_model_id">模型 ID</string>
+    <string name="settings_model_max_tokens">输出上限 max_tokens（留空 = 8192）</string>
+    <string name="settings_model_context_window">上下文窗口（留空 = 自动推断）</string>
+    <string name="settings_model_probe_list">获取列表</string>
+    <string name="settings_model_probe_running">探测中…</string>
+    <string name="settings_model_probe_list_failed">获取失败：%1$s</string>
+    <string name="settings_model_probe_list_empty">服务商没有返回任何模型。</string>
+    <string name="settings_model_probe">探测能力</string>
+    <string name="settings_model_probe_hint">通过服务商的模型列表接口读取上下文与思考档位；只采信服务商公开的字段，其余可手动填写。</string>
+    <string name="settings_model_probe_failed">探测失败：%1$s</string>
+    <string name="settings_model_probe_not_listed">模型不在服务商列表中；按模型名推断上下文约 %1$d，请核对模型 ID。</string>
+    <string name="settings_model_probe_context">上下文 %1$d</string>
+    <string name="settings_model_probe_output">输出上限 %1$d</string>
+    <string name="settings_model_probe_context_inferred">上下文未公开，按模型名推断约 %1$d</string>
+    <string name="settings_model_probe_reasoning">思考档位：%1$s</string>
+    <string name="settings_model_probe_reasoning_default">默认思考档位：%1$s</string>
+    <string name="settings_model_probe_reasoning_no_levels">该模型支持思考，但服务商未公开具体档位；请手动开启并选择强度。</string>
+    <string name="settings_model_probe_reasoning_unsupported">服务商声明该模型不支持思考。</string>
+    <string name="settings_model_probe_reasoning_unknown">思考档位：服务商未公开，可手动配置。</string>
+    <string name="settings_model_probe_vision">图片输入：支持（已勾选图像模型）。</string>
+    <string name="settings_model_probe_empty">服务商没有公开这项能力。</string>
+    <string name="settings_choose_model">选择模型</string>
+    <string name="settings_model_vision">图像模型（可接收 / 生成图片）</string>
+    <string name="settings_model_reasoning">推理模型（可切换思考强度）</string>
+    <string name="settings_model_replay_thinking">回传思考内容</string>
+    <string name="settings_model_replay_thinking_hint">默认开启：把历史回合的思考一起发回服务商，让多轮推理接得上。DeepSeek 官方要求「带 tools 的请求必须回传 reasoning_content」，关闭后可能直接报 400；界面与日志仍会保留思考原文。</string>
+    <string name="settings_model_reasoning_levels">支持的思考强度</string>
+    <string name="settings_model_thinking_map">思考强度映射（可选：把强度映射为服务商实际发送值）</string>
+    <string name="settings_model_default_reasoning">默认思考强度</string>
+    <string name="settings_model_advanced">高级采样参数（仅 OpenAI 兼容协议生效）</string>
+    <string name="settings_model_frequency_penalty">频率惩罚 frequency_penalty（-2.0 ~ 2.0）</string>
+    <string name="settings_model_presence_penalty">存在惩罚 presence_penalty（-2.0 ~ 2.0）</string>
+    <string name="settings_model_top_p">核采样 top_p（0 ~ 1）</string>
+    <string name="settings_model_seed">随机种子 seed（留空 = 不发送）</string>
+    <string name="settings_number_min">需为不小于 %1$d 的整数</string>
+    <string name="settings_number_range">需在 %1$s ~ %2$s 之间</string>
+    <string name="settings_model_advanced_unsupported">Anthropic 协议不支持这些参数，保存后不会发送。</string>
+    <string name="settings_model_delete_confirm">删除模型「%1$s」？此操作不可撤销。</string>
+    <string name="action_save">保存</string>
+    <string name="action_edit">编辑</string>
+
+    <!-- 崩溃报告（独立 :crash 进程展示） -->
+    <string name="crash_title">Kair 崩溃了</string>
+    <string name="crash_intro">应用遇到了未处理的错误，已停止运行。你可以把日志导出到下载目录，反馈给开发者。</string>
+    <string name="crash_already_exported">日志已保存到 %1$s</string>
+    <string name="crash_export">导出日志</string>
+    <string name="crash_exported_hint">已导出到 %1$s</string>
+    <string name="crash_export_failed">导出失败：请确认已授予存储权限</string>
+    <string name="crash_exit">退出</string>
+    <string name="crash_origin_kernel">崩溃来源：内核错误</string>
+    <string name="crash_origin_plugin">崩溃来源：第三方插件「%1$s」（%2$s）</string>
+    <string name="crash_origin_unknown_plugin">崩溃来源：第三方插件（未能定位到具体插件）</string>
+    <string name="crash_disable_plugin">禁用「%1$s」并重启</string>
+    <string name="crash_disable_all_plugins">禁用全部第三方插件并重启</string>
+
+    <!-- 插件 -->
+    <string name="plugins_title">插件</string>
+    <string name="plugins_install">安装插件</string>
+    <string name="plugins_install_hint">点右上角「安装插件」从文件管理器选择 .kplug 包；也可手动放入 %1$s。</string>
+    <string name="plugins_install_failed">安装失败：%1$s</string>
+    <string name="plugins_install_unreadable">无法读取所选文件</string>
+    <string name="plugins_compat_title">插件不兼容</string>
+    <string name="plugins_compat_message">该插件与当前 Kair 版本不兼容：\n%1$s\n\n强制安装可能崩溃或行为异常，确定继续吗？</string>
+    <string name="plugins_compat_force">强制安装</string>
+    <string name="plugins_compat_warning">与当前版本不兼容：%1$s（请更新插件，或停用 / 删除）</string>
+    <string name="plugins_load_failed">无法加载：%1$s</string>
+    <string name="plugins_retry">重试</string>
+    <string name="plugins_reload">重新加载</string>
+    <string name="plugins_reload_hint">改动 plugins/ 下的文件后点「重新加载」；新装插件对已打开的会话下一回合即时生效，无需新建会话。代码插件（.kplug）换新版时旧类会驻留内存，重启 App 后释放。</string>
+    <string name="plugins_builtin">内置插件（%1$d）</string>
+    <string name="plugins_third_party">第三方插件（%1$d）</string>
+    <string name="plugins_disable">停用</string>
+    <string name="plugins_delete">删除</string>
+    <string name="plugins_delete_data_title">删除「%1$s」插件？</string>
+    <string name="plugins_delete_data_message">该插件生成了以下数据，将一并删除（不进回收站）：\n\n%1$s\n\n如需保留数据，请改用「停用」而不是删除。</string>
+    <string name="plugins_enable">启用</string>
+    <string name="plugins_disabled_section">已停用（%1$d）</string>
+    <string name="plugins_disabled_hint">停用的插件文件仍在磁盘上，可重新启用；「删除」会连同文件一并移除，不可恢复。</string>
+    <string name="plugins_core_badge">核心</string>
+    <string name="plugins_core_disable_title">关闭「%1$s」？</string>
+    <string name="plugins_core_disable_message">这是核心插件，关闭会让对应的基础能力立即失效（存储 / 命令后端 / 传输层 / 系统提示 / 审批等）。不会损坏数据、也不会导致无法启动，但相关功能会静默降级。确定关闭吗？</string>
+    <string name="plugins_core_disable_confirm">仍然关闭</string>
+    <string name="plugins_panels">能力入口</string>
+    <string name="plugins_panel_from">来自 %1$s</string>
+    <string name="plugins_settings_fields">%1$d 项设置</string>
+    <string name="plugins_settings_empty">该插件没有可配置的设置项。</string>
+    <string name="plugins_settings_range">范围：%1$d ~ %2$d</string>
+    <string name="plugins_settings_min">最小值：%1$d</string>
+    <string name="plugins_settings_max">最大值：%1$d</string>
+    <string name="plugins_settings_out_of_range">取值需在 %1$d ~ %2$d 之间</string>
+    <string name="plugins_settings_no_options">暂无可用选项（请先添加相关配置）</string>
+    <string name="plugins_settings_file_open">查看 / 编辑</string>
+    <string name="active_session_required">请先打开一个会话：该操作需要以当前会话的工作区为基准，不能使用临时目录。</string>
+    <string name="plugins_actions">操作</string>
+    <string name="plugins_commands">命令</string>
+    <string name="plugins_command_from">来自 %1$s</string>
+    <string name="devtools_providers">已注册服务商：%1$d</string>
+    <string name="devtools_commands">可用斜杠命令：%1$d</string>
+    <string name="devtools_hooks">已挂载中间件钩子：%1$d</string>
+    <string name="plugins_panel_title">面板</string>
+    <string name="plugins_panel_missing">未找到面板：%1$s</string>
+    <string name="action_fullscreen">全屏</string>
+    <string name="panel_open_fullscreen">%1$s，全屏打开</string>
+
+    <!-- 工具开关（插件页扁平列出全部工具，分区可折叠；插件面板页脚渲染本插件的工具） -->
+    <string name="plugins_tools">工具</string>
+    <string name="plugins_tools_hint">关闭后该工具不再注册给模型（不进请求 schema 与系统提示），改动即时生效并持久化。</string>
+    <string name="panel_tools_title">本插件的工具</string>
+
+    <!-- 提问工具 ask_user：agent 挂起等待用户回答 -->
+    <string name="ask_title">向你提问</string>
+    <string name="ask_hint">agent 正在等待你的回答。</string>
+    <string name="ask_input_hint">输入答案</string>
+    <string name="ask_send">回答</string>
+    <string name="ask_skip">跳过</string>
+    <string name="ask_timeout_hint">%1$d 秒内无人回答将自动跳过并结束本次调用</string>
+
+    <!-- 工具调用审批面板 -->
+    <string name="approval_subagent_label">拦截子智能体</string>
+    <string name="approval_subagent_desc">默认开启：子智能体调用需审批的工具时，确认卡片显示在发起它的父会话，可直接审批。关闭后子智能体完全不受审批限制（含危险命令），适合无人监督的并行任务。</string>
+    <string name="approval_danger_label">删除类操作需审批</string>
+    <string name="approval_danger_desc">默认开启：rm / rmdir / unlink / shred / find -delete，以及「先写个删除脚本再执行」的常见绕过，都会先弹确认；声明为 delete 类别的第三方工具也走这个开关。删除目标明显是临时 / 构建产物（/tmp、build、dist、node_modules、.gradle 等）时不弹。关掉它 agent 才能直接删除文件。</string>
+    <string name="approval_write_label">文件写入类工具需审批</string>
+    <string name="approval_write_desc">声明为 write 类别的工具（内置 write / edit 与第三方写入工具）改动文件前弹确认。默认关闭。</string>
+    <string name="approval_execute_label">执行类工具需审批</string>
+    <string name="approval_execute_desc">声明为 execute 类别的第三方工具（以及 subagent 委派）执行前弹确认；container_shell / android_shell 另有独立开关。默认关闭。未声明类别的第三方工具始终需要审批，不受此开关影响。</string>
+    <string name="approval_shell_label">Linux 容器命令（container_shell）需审批</string>
+    <string name="approval_shell_desc">每次经容器执行命令前弹确认（proot，项目工作区挂载在 /projects）。默认关闭。</string>
+    <string name="approval_local_shell_label">设备 shell（android_shell）需审批</string>
+    <string name="approval_local_shell_desc">每次在设备系统上直接执行命令前弹确认（/system、/data、/sdcard 等，不经过容器）。默认关闭。</string>
+
+    <!-- 提示词缓存插件与面板 -->
+    <string name="chat_cache_panel">缓存</string>
+    <string name="cache_empty">当前会话还没有请求记录。发送一条消息后回到这里。</string>
+    <string name="cache_session_label">会话</string>
+    <string name="cache_session_none">（无）</string>
+    <string name="cache_session_group">%1$s · %2$s</string>
+    <string name="cache_session_unknown">未知会话 %1$s</string>
+    <string name="cache_session_switch">切换会话</string>
+    <string name="cache_session_follow">跟随当前会话 · %1$s</string>
+    <string name="cache_session_follow_none">跟随当前会话</string>
+    <string name="cache_session_following">跟随当前会话</string>
+    <string name="cache_session_pinned">已固定</string>
+    <string name="cache_session_updated">最近活跃 %1$s</string>
+    <string name="cache_session_no_time">尚无活跃记录</string>
+    <string name="cache_session_status">%1$s · %2$s</string>
+    <string name="cache_detail_session">会话：%1$s</string>
+    <string name="cache_hit_trend">命中率趋势（最近 %1$d 次）</string>
+    <string name="cache_hit_weighted">本会话累计 %1$d%%（按 token 加权，%2$d 发）</string>
+    <string name="cache_hit_weighted_unrated">本会话累计 %1$d%%（加权 %2$d 发；另有 %3$d 发只回了空 usage，算不出比值）</string>
+    <string name="cache_hit_weighted_none">%1$d 发请求只回了空 usage，累计命中率无法计算（不是 0%%）</string>
+    <string name="cache_section_stats">段落缓存：本次 %1$d/%2$d 段复用上次正文</string>
+    <string name="cache_section_miss">未命中 %1$d 段 —— 无缓存可复用 %2$d · 输入已变 %3$d</string>
+    <string name="cache_section_hint">未命中里「无缓存可复用」多半来自每回合刷新提示（设置里可关），这一项省的是重算、不是 token</string>
+    <string name="cache_segments">分段</string>
+    <string name="cache_change_new">新增</string>
+    <string name="cache_change_unchanged">未变</string>
+    <string name="cache_change_appended">追加</string>
+    <string name="cache_change_rewritten">改写</string>
+    <string name="cache_change_na">尾部</string>
+    <string name="cache_detail_back">← 返回分段列表</string>
+    <string name="cache_detail_meta">%1$s · 指纹 %2$s</string>
+    <string name="cache_detail_not_prefixed">该段位于缓存前缀之后（易变尾部），不参与前缀缓存。</string>
+    <string name="cache_detail_unchanged">与上一回合逐字节相同，未破坏缓存前缀。</string>
+    <string name="cache_detail_rewritten">与上一回合不同：本段被改写，缓存前缀可能已失效。</string>
+    <string name="cache_detail_added">本次新增 %1$d 字节</string>
+    <string name="cache_detail_full">本次内容（超长时只显示末尾）</string>
+    <string name="cache_detail_view_readable">可读</string>
+    <string name="cache_detail_view_raw">原始前缀</string>
+    <string name="cache_detail_raw_note">用于计量缓存前缀的规范化文本（不是 HTTP 报文）；\0 / \1 / \2 是 Kair 内部的分隔符，不会发给模型，超长时只显示末尾</string>
+
+    <!-- 失败可见诊断（缓存面板内的只读分区） -->
+    <string name="diag_title">诊断（只读）</string>
+    <string name="diag_all_clear">本回合无异常：段落全部就位，插件装载与投递均正常。</string>
+    <string name="diag_section_failed">贡献点异常</string>
+    <string name="diag_section_absent">段落缺席</string>
+    <string name="diag_compaction_failed">压缩降级（摘要失败，已用机械检查点）</string>
+    <string name="diag_issue">%1$s：%2$s</string>
+    <string name="diag_issue_with_detail">%1$s：%2$s（%3$s）</string>
+    <string name="diag_plugin_failed">插件装载失败</string>
+    <string name="diag_skill_skipped">技能文件被跳过</string>
+    <string name="diag_delivery">插件投递失败：永久 %1$d · 临时 %2$d</string>
+    <string name="diag_empty_responses">空回复回合：%1$d 次（模型只回了结束原因，无正文无调用，已丢弃）</string>
+    <string name="diag_stop_timeout">停止超时</string>
+
+    <!-- 后台常驻（前台服务） -->
+    <string name="keepalive_channel_name">后台运行</string>
+    <string name="keepalive_channel_desc">保持 Kair 在后台运行的通知。</string>
+    <string name="keepalive_title">Kair 正在后台运行</string>
+    <string name="keepalive_running">正在执行 %1$d 个任务，请不要停止本通知。</string>
+    <string name="keepalive_idle">常驻中，避免后台任务被系统回收。</string>
+
+    <!-- 子智能体插件与面板 -->
+    <string name="subagents_empty">还没有子智能体。模型可用 subagent 工具委派一个任务。</string>
+    <string name="subagents_started">开始于 %1$s</string>
+    <string name="subagents_kill">终止</string>
+    <string name="subagents_remove">清除</string>
+    <string name="subagents_clear">清除全部子智能体</string>
+    <string name="subagents_view">查看过程</string>
+    <string name="subagents_detail_hint">完整循环：任务 → 模型输出 → 工具调用 → 工具结果</string>
+    <string name="subagents_detail_empty">子智能体还没有产生任何消息。</string>
+    <string name="subagents_gone">这个子智能体的会话已被清理，无法查看过程。</string>
+    <string name="subagent_status_working">运行中</string>
+    <string name="subagent_status_idle">空闲</string>
+    <string name="subagent_status_error">出错</string>
+
+    <!-- 信息插件与面板 -->
+    <string name="info_title">Android 版 Kair</string>
+    <string name="info_subtitle">Kair 编程智能体。</string>
+    <string name="info_provider">服务商</string>
+    <string name="info_model">模型</string>
+    <string name="info_tools">工具</string>
+    <string name="info_none_selected">（未选择）</string>
+    <string name="info_plugins">插件（%1$d）</string>
+
+    <!-- 技能（skills） -->
+    <string name="skills_root_hint">技能来自两处：用户技能根 %1$s（放入 &lt;名称&gt;/SKILL.md 即注册；请用文件管理器或读写工具放入，容器里写这个路径会落进 rootfs）与插件自带的 plugins/&lt;id&gt;/skills/&lt;名称&gt;/。每项下方标注实际目录。</string>
+    <string name="skills_empty">还没有注册任何技能。</string>
+    <string name="skills_no_description">（无描述）</string>
+    <string name="skills_body_chars">正文 %1$d 字符（按需加载，不占提示词前缀）</string>
+
+    <!-- 工作区文件面板 -->
+    <string name="files_plugin_name">工作区文件</string>
+    <string name="files_plugin_desc">在应用内浏览 / 预览 / 编辑 agent 的工作区文件。</string>
+    <string name="files_root_hint">工作区根目录：%1$s</string>
+    <string name="files_loading">加载中…</string>
+    <string name="files_empty">空目录</string>
+    <string name="files_parent">上级目录</string>
+    <string name="files_home">工作区根</string>
+    <string name="files_list_failed">无法读取目录：%1$s</string>
+    <string name="files_binary">二进制文件，无法在应用内预览。</string>
+    <string name="files_too_large">文件过大（%1$s），无法在应用内预览。</string>
+    <string name="files_read_failed">无法读取：%1$s</string>
+    <string name="files_save">保存</string>
+    <string name="files_saved">已保存</string>
+    <string name="files_save_failed">保存失败：%1$s</string>
+    <string name="files_new_file">新建文件</string>
+    <string name="files_new_folder">新建文件夹</string>
+    <string name="files_import">导入文件</string>
+    <string name="files_imported">已导入 %1$d 个文件</string>
+    <string name="files_import_skipped">跳过 %1$s</string>
+    <string name="files_import_too_large">%1$s 超过 %2$d MB</string>
+    <string name="files_import_failed_item">%1$s：%2$s</string>
+    <string name="files_name_hint">名称</string>
+    <string name="files_actions">更多操作</string>
+    <string name="files_rename">重命名</string>
+    <string name="files_copy">复制</string>
+    <string name="files_move">移动</string>
+    <string name="files_delete">删除</string>
+    <string name="files_export">导出到下载</string>
+    <string name="files_path_hint">目标路径（绝对路径）</string>
+    <string name="files_confirm">确定</string>
+    <string name="files_delete_confirm">确认删除 %1$s？此操作不可恢复。</string>
+    <string name="files_delete_session_log_confirm">确认删除会话日志 %1$s？该会话会同时从会话列表移除，相关图片附件会被回收。</string>
+    <string name="files_deleted">已删除 %1$s</string>
+    <string name="files_renamed">已重命名</string>
+    <string name="files_copied">已复制</string>
+    <string name="files_moved">已移动</string>
+    <string name="files_created">已创建 %1$s</string>
+    <string name="files_exported">已导出到 %1$s</string>
+    <string name="files_op_failed">操作失败：%1$s</string>
+
+    <!-- 回收站（U38）：面板 + 阈值设置 + 一键清空 -->
+    <string name="trash_plugin_name">回收站</string>
+    <string name="trash_plugin_desc">浏览与清理全局回收站：一键清空，或按时间 / 条数 / 体积自动清理。</string>
+    <string name="trash_summary">%1$d 条 · %2$s</string>
+    <string name="trash_counting">统计中…</string>
+    <string name="trash_empty_all">一键清空</string>
+    <string name="trash_empty_confirm_title">清空回收站</string>
+    <string name="trash_empty_confirm_message">删除回收站里全部 %1$d 条？此操作不可恢复。只清回收站，不动工作区文件。</string>
+    <string name="trash_empty_nothing">回收站已经是空的</string>
+    <string name="trash_empty_done">已清空 %1$d 条</string>
+    <string name="trash_empty_partial">已删 %1$d 条，%2$d 条没删掉（权限或正被占用）</string>
+    <string name="trash_empty_failed">%1$d 条都没删掉（权限或正被占用）</string>
+    <string name="trash_enabled_label">自动清理回收站</string>
+    <string name="trash_enabled_desc">下面三条上限各自独立触发，任一超限就从最旧的开始删到达标。删的是回收站，不动工作区。仅在应用存活期间生效：进程被系统回收后不再清理，下次启动时补扫一次。</string>
+    <string name="trash_age_label">保留时长</string>
+    <string name="trash_age_desc">比这更旧的条目先删掉；选「不限制」即不按时间删。</string>
+    <string name="trash_age_off">不限制</string>
+    <string name="trash_age_7">7 天</string>
+    <string name="trash_age_15">15 天</string>
+    <string name="trash_age_30">30 天</string>
+    <string name="trash_items_label">条数上限</string>
+    <string name="trash_items_desc">顶层条目多于这个数时，从最旧的开始删到达标。0 = 不按条数删。</string>
+    <string name="trash_size_label">体积上限（MB）</string>
+    <string name="trash_size_desc">总大小超过这个数时，从最旧的开始删到达标。0 = 不按体积删；开着这一条时扫描要递归求和，条目很多会慢。</string>
+    <string name="trash_action_label">手动清空</string>
+    <string name="trash_action_desc">立刻删除回收站里全部条目，与面板里的「一键清空」是同一条路径。结果读数在回收站面板里看。</string>
+    <string name="trash_action_button">清空回收站</string>
+
+    <!-- 审批 -->
+    <string name="approval_title">需要确认</string>
+    <string name="approval_hint">Agent 请求执行以下操作，等待你的确认</string>
+    <string name="approval_from_subagent">来自子智能体「%1$s」</string>
+    <string name="approval_timeout_hint">%1$d 秒内无人操作将自动拒绝并结束本次调用</string>
+    <string name="approval_allow">允许</string>
+    <string name="approval_allow_session">本会话放行</string>
+    <string name="approval_allow_always">永久放行该命令</string>
+    <string name="approval_deny">拒绝</string>
+
+    <!-- 记忆（内置插件；U64）：沿用外部插件的 memory.* 设置键，数据文件仍是 .kair/memory.md -->
+    <string name="memory_plugin_name">记忆</string>
+    <string name="memory_plugin_desc">跨会话记忆：两段式（稳定 / 近期）、按字符预算注入、过期自动隐藏、每 N 个用户回合后台整理。</string>
+    <string name="memory_panel_title">记忆</string>
+    <string name="memory_setting_auto">自动整理</string>
+    <string name="memory_setting_auto_desc">每 N 个用户回合、注入被截断或行数超过阈值时，让子智能体直接改写记忆文件。关闭后仍会注入记忆，只是不再自动整理。</string>
+    <string name="memory_setting_every">整理间隔（用户回合）</string>
+    <string name="memory_setting_every_desc">用户每发一条消息算一个回合；到点后在下一次回合结束时整理。计数由插件自己持久化，与上下文压缩无关。</string>
+    <string name="memory_setting_max_chars">注入预算（字）</string>
+    <string name="memory_setting_max_chars_desc">每回合注入记忆段的字符上限（中文 1 字、ASCII 0.25 字）。超出后先丢近期最旧条目，段尾标注未注入条数。</string>
+    <string name="memory_setting_max_lines">行数软阈值</string>
+    <string name="memory_setting_max_lines_desc">文件非空行数超过此值时也会触发整理；它不再是注入上界（注入由字符预算控制）。</string>
+    <string name="memory_setting_retention">近期段保留天数</string>
+    <string name="memory_setting_retention_desc">近期段里超过这个天数的条目不注入（不删除，留给整理判断是否升级到稳定段）。</string>
+    <string name="memory_setting_model">整理用模型</string>
+    <string name="memory_setting_model_desc">整理子智能体使用的模型；不配置时跟随当前会话。</string>
+    <string name="memory_setting_file">记忆文件</string>
+    <string name="memory_setting_file_desc">工作区里的 .kair/memory.md。容器 root 写过之后应用进程可能读不到；可在「设置 → 工作区文件权限」修复。</string>
+    <string name="memory_viewer_title">记忆</string>
+    <string name="memory_viewer_hint">点「查看 / 编辑」可切换项目查看 / 编辑记忆文件；下方为记忆设置。</string>
+    <string name="memory_viewer_no_projects">暂无项目可看</string>
+    <string name="memory_viewer_file_label">%1$s · 记忆文件</string>
+
+    <!-- 同名第三方插件被内置版顶替（U64） -->
+    <string name="plugins_shadowed_section">已内置（外部版本未装载） %1$d</string>
+    <string name="plugins_shadowed_state">内置版优先；外部版本留在磁盘上但不装载。卸载只删插件文件，不动数据文件。</string>
+    <string name="plugins_shadowed_remove">卸载外部版本（保留数据文件）</string>
+
+    <!-- 诊断提示：功能就地记录的计数类事实（如记忆插件过期隐藏 / 预算截断） -->
+    <string name="diag_notice">提示 · %1$s</string>
+
+    <!-- U90 · 进程保活（幻影进程查杀开关 + 内置 adb） -->
+    <string name="phantom_plugin_name">ADB</string>
+    <string name="phantom_plugin_desc">无线调试配对与设备授权，为 Kair 提供设备工具（shell / 截屏）；内含进程保活开关（关闭系统幻影进程查杀）。</string>
+    <string name="phantom_panel_title">ADB</string>
+    <string name="phantom_adb_section">无线调试</string>
+    <string name="phantom_keepalive_title">进程保活</string>
+    <string name="phantom_status_ready">已配对且已授权，下方进程保活可直接使用。</string>
+    <string name="phantom_status_granted">已授权（写入系统设置的权限有效），下方进程保活可直接使用。</string>
+    <string name="phantom_status_paired_ungranted">已配对，但尚未授权。点下方按钮连接并授权。</string>
+    <string name="phantom_status_fresh">尚未配对。按下面步骤填配对码完成首次连接。</string>
+    <string name="phantom_need_grant_first">尚未授权，需先在上方「无线调试」完成连接并授权。</string>
+    <string name="phantom_not_needed">你的系统（Android 12 以下）没有幻影进程查杀，无需此操作。</string>
+    <string name="phantom_explain">系统会定期清理应用派生、但未在系统登记的后台进程（称为「幻影进程」）。Kair 的容器桌面整棵进程树都属于此类，播放视频时进程一多就会被整棵杀掉，表现为桌面突然崩溃。关闭这项查杀即可让桌面稳定运行。</string>
+    <string name="phantom_permission_notice">关闭查杀需要「写入系统设置」权限。该权限不会在安装时授予，而是由你在下方引导中通过无线调试主动授予一次；Kair 只用它写「幻影进程查杀」这一个开关，不碰其它系统设置。</string>
+    <string name="phantom_setup_guide">1. 系统设置 → 开发者选项 → 无线调试（先打开开关）。\n2. 点「使用配对码配对设备」，把弹窗里的 IP:端口 和 6 位配对码填到下面。配对端口只在弹窗开着时有效，填完立刻点。\n3. 「连接地址」填无线调试主屏显示的 IP:端口（常驻，与配对端口不同）。\n4. 点「配对并授权」。密钥存在本机，以后只需填连接地址直接连接，不用再配对。</string>
+    <string name="phantom_pair_host_hint">配对地址 IP:端口（配对弹窗里）</string>
+    <string name="phantom_pair_code_hint">6 位配对码</string>
+    <string name="phantom_connect_host_hint">连接地址 IP:端口（无线调试主屏）</string>
+    <string name="phantom_action_pair">配对并授权</string>
+    <string name="phantom_pairing">正在配对…</string>
+    <string name="phantom_setup_guide_paired">配对密钥已保存在本机，无需再填配对码。\n1. 系统设置 → 开发者选项 → 无线调试（打开开关）。\n2. 把无线调试主屏显示的 IP:端口 填到下面——配对端口是临时的，连接端口才是常驻的。\n3. 点「直接连接并授权」。若提示密钥被拒，说明配对已失效（如系统清空过已配对设备），改走重新配对。</string>
+    <string name="phantom_action_connect">直接连接并授权</string>
+    <string name="phantom_connecting">正在连接…</string>
+    <string name="phantom_adb_authorized">已连接并授权</string>
+    <string name="phantom_tools_ready">设备工具已启用：device_shell（执行 shell 命令）、device_screen（截屏）。换 Wi-Fi 或重启无线调试后工具不会消失，只需重新连接一次。</string>
+    <string name="phantom_action_reconnect">重新连接（端口变了点这里）</string>
+    <string name="phantom_action_repair">密钥失效？重新配对</string>
+    <string name="phantom_action_clear_keys">清除本机密钥</string>
+    <string name="phantom_keys_cleared">已清除本机密钥与配对记录。系统「已配对设备」里的 Kair 条目不会跟着消失，需在系统界面手动删掉后重新配对。</string>
+    <string name="phantom_error_connect">连接失败：%1$s</string>
+    <string name="phantom_switch_label">关闭系统查杀（保活）</string>
+    <string name="phantom_switch_hint">开 = 关闭查杀，桌面稳定；关 = 恢复系统默认（桌面可能被杀）。设置重启后保留。</string>
+    <string name="phantom_state_on">查杀已关闭，桌面保活中。</string>
+    <string name="phantom_state_off">查杀开启中，桌面可能被系统杀掉。</string>
+    <string name="phantom_granted">已授权，可直接切换开关。</string>
+    <string name="phantom_error_pair">配对失败：%1$s</string>
+    <string name="phantom_error_grant">授权失败：%1$s</string>
+    <string name="phantom_error_timeout">操作超时，请确认无线调试已打开、地址与配对码正确后重试。</string>
+    <string name="phantom_error_invalid_address">地址格式应为 IP:端口，例如 192.168.1.5:37123。</string>
+    <string name="phantom_error_code">请填写 6 位配对码。</string>
+    <string name="phantom_shizuku_note">若已装 Shizuku 并占用无线调试，配对可能互相挤掉；二者建议二选一。</string>
+    <string name="phantom_root_fast">检测到 root，可直接切换，无需无线调试。</string>
+
+    <!-- U106 设置页与插件页重构：编号分区 / 行组 / 汇总 / 筛选 / 溢出菜单 -->
+    <string name="settings_section_prompt">系统提示</string>
+    <string name="settings_section_plugins">插件</string>
+    <string name="settings_max_steps_hint">单轮最多工具调用步数；到达上限后停止并交还控制权。</string>
+    <string name="settings_addendum_counter">%1$d/4000</string>
+    <string name="settings_stepper_decrease">减少</string>
+    <string name="settings_stepper_increase">增加</string>
+    <string name="settings_models_actions">%1$s 的更多操作</string>
+    <string name="settings_models_set_active">设为当前默认</string>
+    <string name="settings_plugins_row">插件与能力</string>
+    <string name="settings_plugins_row_subtitle">%1$d 内置 · %2$d 第三方 · %3$d 停用</string>
+    <string name="settings_permissions_hint_short">检查插件声明的数据路径、各项目 .kair 与回收站；工作区其它文件不在范围内。</string>
+    <string name="settings_plugin_embed_from">来自 %1$s · 设置面板</string>
+
+    <string name="plugins_summary_enabled">启用</string>
+    <string name="plugins_summary_disabled">停用</string>
+    <string name="plugins_summary_need">需处理</string>
+    <string name="plugins_filter_all">全部</string>
+    <string name="plugins_filter_builtin">内置</string>
+    <string name="plugins_filter_third">第三方</string>
+    <string name="plugins_filter_need">需要处理</string>
+    <string name="plugins_capabilities_more">展开全部 %1$d 个入口</string>
+    <string name="plugins_capabilities_less">收起</string>
+    <string name="plugins_tool_search_hint">筛选工具…</string>
+    <string name="plugins_tool_empty">没有匹配的工具</string>
+    <string name="plugins_tool_owner_builtin">内核</string>
+    <string name="plugins_tool_owner_plugin">插件 %1$s</string>
+    <string name="plugins_section_need">需要处理</string>
+    <string name="plugins_builtin_more">查看全部 %1$d 个</string>
+    <string name="plugins_builtin_less">收起内置列表</string>
+    <string name="plugins_status_enabled">启用</string>
+    <string name="plugins_status_disabled">已停用</string>
+    <string name="plugins_status_failed">加载失败</string>
+    <string name="plugins_status_shadowed">被内置版顶替</string>
+    <string name="plugins_status_incompatible">运行期不兼容</string>
+    <string name="plugins_more">%1$s 的更多操作</string>
+    <string name="plugins_menu_settings">设置面板</string>
+    <string name="plugins_menu_copy_id">复制插件 ID</string>
+    <string name="plugins_id_copied">已复制 %1$s</string>
+    <string name="plugins_install_choose">选择 .kplug 文件</string>
+    <string name="plugins_need_empty">没有需要处理的插件。</string>
+    <string name="plugins_third_empty">还没有安装第三方插件。</string>
+
+    <!-- Agent Dev Browser（P1）：常驻悬浮小窗渲染 + 控制台面板 -->
+    <string name="browser_plugin_name">浏览器</string>
+    <string name="browser_plugin_description">在常驻小窗里查看并操控本地开发页面（WebView）。</string>
+    <string name="browser_panel_hint">请在会话内通过九宫格打开浏览器控制台；页面在悬浮小窗中渲染。</string>
+    <string name="browser_open_in_panel">在面板中查看</string>
+    <string name="browser_action_fullscreen">全屏</string>
+    <string name="browser_action_exit_fullscreen">退出全屏</string>
+    <string name="browser_action_close">关闭</string>
+    <string name="browser_tab_console">Console</string>
+    <string name="browser_tab_network">Network</string>
+    <string name="browser_tab_actions">操作</string>
+    <string name="browser_status_agent">Agent 操控中</string>
+    <string name="browser_status_human">你已接管</string>
+    <string name="browser_status_idle">待命</string>
+    <string name="browser_back">后退</string>
+    <string name="browser_reload">刷新</string>
+    <string name="browser_url_hint">未打开页面</string>
+    <string name="browser_url_invalid">地址打不开：只支持 http(s)，并检查本地服务是否在运行</string>
+    <string name="browser_dev_badge">DEV</string>
+    <string name="browser_close_page">关闭页面</string>
+    <string name="browser_overlay_permission">悬浮小窗</string>
+    <string name="browser_overlay_permission_desc">允许 Kair 在其他应用上层显示悬浮小窗。页面统一在小窗里渲染：授权后切到后台也保持可见、可截图；未授权时只在 Kair 前台显示。</string>
+    <string name="browser_overlay_grant">去授权</string>
+    <string name="browser_overlay_prompt_title">开启悬浮小窗？</string>
+    <string name="browser_overlay_prompt_body">页面在悬浮小窗中渲染，需要「显示在其他应用上层」权限。授权后切到后台小窗仍然可见、可继续截图；不授权也可以只在前台使用。稍后可在 设置 → 插件 → 浏览器 里开启。</string>
+    <string name="browser_overlay_later">暂不</string>
+    <string name="browser_no_page">还没有打开页面</string>
+    <string name="browser_no_page_hint">在上方地址栏输入网址自己打开，或让 Agent 调用 browser_open。</string>
+    <string name="browser_console_empty">暂无 Console 输出</string>
+    <string name="browser_network_empty">暂无网络请求</string>
+    <string name="browser_actions_empty">暂无 Agent 操作</string>
+    <string name="browser_clear">清空</string>
+    <string name="tool_group_browser">操作浏览器 %1$d 次</string>
+</resources>
